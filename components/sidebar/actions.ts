@@ -18,20 +18,39 @@ import {
 import { revalidateTag } from "next/cache";
 
 export async function UpdateDocumentName(id: string, name: string) {
+  if (!name) return;
+
   const { userId } = await auth();
 
   if (!userId) {
     return { message: "You must be signed in" };
   }
 
+  const embeddings: number[] = await fetch(
+    "http://localhost:11434/api/embeddings",
+    {
+      method: "POST",
+      body: JSON.stringify({
+        model: "nomic-embed-text",
+        prompt: name,
+      }),
+    },
+  ).then(async (result) => {
+    const json = await result.json();
+    return json.embedding;
+  });
+
   const db = await connectionPool.acquire();
   try {
     // language=SQL format=false
     await db.query(
       `UPDATE ${id}
-       SET name = "${name}"`,
+       SET name = $name, name_embedding = $embedding`,
+      {
+        name: name,
+        embedding: embeddings,
+      },
     );
-    revalidateTag("documents");
   } finally {
     connectionPool.release(db);
   }
@@ -206,7 +225,9 @@ export async function GetContent(
             return {
               id: doc.id.toString(),
               name: doc.name,
+              name_embedding: [],
               content: doc.content,
+              content_embedding: [],
               createdAt: doc.createdAt,
             };
           }),
@@ -219,7 +240,9 @@ export async function GetContent(
                 return {
                   id: doc.id.toString(),
                   name: doc.name,
+                  name_embedding: [],
                   content: doc.content,
+                  content_embedding: [],
                   createdAt: doc.createdAt,
                 };
               }),

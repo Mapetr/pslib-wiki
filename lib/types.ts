@@ -3,7 +3,9 @@ import { RecordId } from "surrealdb";
 export type Document = {
   id: string;
   name: string;
+  name_embedding: number[];
   content: string;
+  content_embedding: number[];
   createdAt: Date;
 };
 
