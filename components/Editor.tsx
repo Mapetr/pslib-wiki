@@ -43,6 +43,8 @@ import {
 import { FileHandler } from "@tiptap-pro/extension-file-handler";
 import { uploadFileToS3 } from "@/app/doc/[id]/actions";
 import { Image } from "@tiptap/extension-image";
+import { useAuth } from "@clerk/nextjs";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const suggestions = createSuggestionsItems([
   {
@@ -96,6 +98,8 @@ export default function Editor({
   content: string;
   id: string;
 }) {
+  const { isSignedIn } = useAuth();
+
   const updateDocument = async (editor: EditorType) => {
     const storable = editor.getHTML();
     await saveDocument(id, storable);
@@ -119,6 +123,8 @@ export default function Editor({
           "image/webp",
         ],
         onDrop: async (currentEditor, files, pos) => {
+          if (!isSignedIn) return;
+
           for (const file of files) {
             const url = await uploadFileToS3(file.size, file.type);
             if (!url) return;
@@ -145,6 +151,8 @@ export default function Editor({
           }
         },
         onPaste: async (currentEditor, files, htmlContent) => {
+          if (!isSignedIn) return;
+
           if (htmlContent) {
             return false;
           }
@@ -216,42 +224,48 @@ export default function Editor({
     },
     content: content,
     onUpdate({ editor }) {
+      if (!isSignedIn) return;
       updateDebounced(editor);
     },
     async onBlur({ editor }) {
+      if (!isSignedIn) return;
       await updateDocument(editor);
     },
     async onDestroy() {
+      if (!isSignedIn) return;
       if (!editor) return;
       await updateDocument(editor);
     },
+    editable: isSignedIn,
   });
 
   if (!editor) return;
 
   return (
     <div>
-      <DragHandle
-        className={
-          "flex h-6 w-6 items-center justify-center rounded-md border border-gray-700 bg-gray-500"
-        }
-        editor={editor}
-      >
-        <svg
-          className={"h-4 w-4"}
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          strokeWidth="1.5"
-          stroke="currentColor"
+      {isSignedIn && (
+        <DragHandle
+          className={
+            "flex h-6 w-6 items-center justify-center rounded-md border border-gray-700 bg-gray-500"
+          }
+          editor={editor}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M3.75 9h16.5m-16.5 6.75h16.5"
-          />
-        </svg>
-      </DragHandle>
+          <svg
+            className={"h-4 w-4"}
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3.75 9h16.5m-16.5 6.75h16.5"
+            />
+          </svg>
+        </DragHandle>
+      )}
       {editor && (
         <BubbleMenuJsx editor={editor} tippyOptions={{ duration: 100 }}>
           <BubbleMenuView editor={editor} />

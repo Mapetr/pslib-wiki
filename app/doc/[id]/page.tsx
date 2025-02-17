@@ -59,17 +59,7 @@ async function Content({
   return (
     <div className={"flex justify-center"}>
       <SetCollectionFromDocument collectionId={collectionId} />
-      <SignedOut>
-        <div
-          className={
-            "prose prose-base prose-invert mx-8 my-4 prose-headings:mb-4 prose-p:mb-2 prose-p:mt-0"
-          }
-          dangerouslySetInnerHTML={{ __html: row.content }}
-        />
-      </SignedOut>
-      <SignedIn>
-        <Editor content={row.content} id={row.id.toString()} />
-      </SignedIn>
+      <Editor content={row.content} id={row.id.toString()} />
     </div>
   );
 }
