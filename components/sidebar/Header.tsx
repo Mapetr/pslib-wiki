@@ -26,6 +26,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { SignedIn } from "@clerk/nextjs";
 
 export default function Header() {
   const [currentCollection, setCurrentCollection] = useAtom(
@@ -61,15 +62,17 @@ export default function Header() {
                   <span>{collection.name}</span>
                 </DropdownMenuItem>
               ))}
-              <DialogTrigger asChild>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setOpen(false);
-                  }}
-                >
-                  <span>Add collection</span>
-                </DropdownMenuItem>
-              </DialogTrigger>
+              <SignedIn>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <span>Add collection</span>
+                  </DropdownMenuItem>
+                </DialogTrigger>
+              </SignedIn>
             </DropdownMenuContent>
           </DropdownMenu>
           <DialogContent>
