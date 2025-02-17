@@ -12,6 +12,7 @@ import AppSidebar from "@/components/sidebar/AppSidebar";
 import { Suspense } from "react";
 import { CSPostHogProvider, JotaiProvider } from "@/app/providers";
 import { WebVitals } from "@/app/web-vitals";
+import { Command } from "@/components/Command";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default function RootLayout({
               <body
                 className={`${geistSans.variable} ${geistMono.variable} dark bg-background antialiased`}
               >
+                <Command />
                 <WebVitals />
                 <SidebarProvider>
                   <AppSidebar />
