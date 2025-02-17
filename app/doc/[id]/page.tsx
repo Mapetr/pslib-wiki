@@ -5,6 +5,10 @@ import { Document } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { useSetAtom } from "jotai";
+import { currentCollectionAtom, selectedCollectionAtom } from "@/atoms";
+import { GetCollectionFromDocument } from "@/app/doc/[id]/actions";
+import { SetCollectionFromDocument } from "./collectionSet";
 
 async function getDocument(id: string) {
   await connection();
@@ -50,8 +54,11 @@ async function Content({
     return;
   }
 
+  const collectionId = await GetCollectionFromDocument(row.id);
+
   return (
     <div className={"flex justify-center"}>
+      <SetCollectionFromDocument collectionId={collectionId} />
       <SignedOut>
         <div
           className={
