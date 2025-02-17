@@ -36,12 +36,13 @@ export default function Header() {
     collections.find((el) => el.id.toString() === currentCollection)?.name ??
     "Select collection";
   const [newCollName, setNewCollName] = useState("");
+  const [open, setOpen] = useState(false);
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <Dialog>
-          <DropdownMenu>
+          <DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton>
                 {currentCollectionName}
@@ -53,6 +54,7 @@ export default function Header() {
                 <DropdownMenuItem
                   key={collection.id.toString()}
                   onClick={() => {
+                    setOpen(false);
                     setCurrentCollection(collection.id.toString());
                   }}
                 >
@@ -60,7 +62,11 @@ export default function Header() {
                 </DropdownMenuItem>
               ))}
               <DialogTrigger asChild>
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    setOpen(false);
+                  }}
+                >
                   <span>Add collection</span>
                 </DropdownMenuItem>
               </DialogTrigger>
