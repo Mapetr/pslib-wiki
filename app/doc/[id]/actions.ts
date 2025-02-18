@@ -4,8 +4,9 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { auth } from "@clerk/nextjs/server";
 import { uuidv4 } from "lib0/random";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { connectionPool } from "@/lib/surrealdb";
+import { connectionPool, DOCUMENTS_NAME } from "@/lib/surrealdb";
 import { RecordId } from "surrealdb";
+import { Document } from "@/lib/types";
 
 const s3Client = new S3Client({
   region: process.env.S3_REGION ?? "",
@@ -88,6 +89,20 @@ export async function GetCollectionFromDocument(
         }
 
         return "";
+      });
+  } finally {
+    connectionPool.release(db);
+  }
+}
+
+export async function GetDocumentName(id: string): Promise<string> {
+  const db = await connectionPool.acquire();
+
+  try {
+    return await db
+      .query<[Document[]]>(`SELECT name FROM ${DOCUMENTS_NAME}:${id}`)
+      .then(([result]) => {
+        return result[0].name ?? "";
       });
   } finally {
     connectionPool.release(db);

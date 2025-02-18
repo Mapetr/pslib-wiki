@@ -4,8 +4,12 @@ import { Document } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
-import { GetCollectionFromDocument } from "@/app/doc/[id]/actions";
+import {
+  GetCollectionFromDocument,
+  GetDocumentName,
+} from "@/app/doc/[id]/actions";
 import { SetCollectionFromDocument } from "./collectionSet";
+import { Metadata, ResolvingMetadata } from "next";
 
 async function getDocument(id: string) {
   await connection();
@@ -59,4 +63,26 @@ async function Content({
       <Editor content={row.content} id={row.id.toString()} />
     </div>
   );
+}
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ id: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const id = (await params).id;
+
+  const previousImages = (await parent).openGraph?.images || [];
+  const prevName = (await parent).title;
+
+  let name = await GetDocumentName(id);
+  if (name === "") {
+    name = prevName?.absolute ?? "";
+  }
+
+  return {
+    title: name,
+    openGraph: {
+      images: ["/some-specific-page-image.jpg", ...previousImages],
+    },
+  };
 }
