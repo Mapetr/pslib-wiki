@@ -93,3 +93,21 @@ p.is-editor-empty:first-child::before {
   height: 0;
   pointer-events: none;
 }
+
+/*LaTeX CSS*/
+.Tiptap-mathematics-editor {
+  background: hsl(var(--accent));
+  color: #fff;
+  font-family: monospace;
+  padding: 0.2rem 0.5rem;
+}
+
+.Tiptap-mathematics-render {
+  padding: 0 0.25rem;
+}
+
+.Tiptap-mathematics-editor,
+.Tiptap-mathematics-render {
+  border-radius: 0.25rem;
+  display: inline-block;
+}

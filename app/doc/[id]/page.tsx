@@ -1,12 +1,9 @@
 import Editor from "@/components/Editor";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { connectionPool, DOCUMENTS_NAME } from "@/lib/surrealdb";
 import { Document } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
-import { useSetAtom } from "jotai";
-import { currentCollectionAtom, selectedCollectionAtom } from "@/atoms";
 import { GetCollectionFromDocument } from "@/app/doc/[id]/actions";
 import { SetCollectionFromDocument } from "./collectionSet";
 

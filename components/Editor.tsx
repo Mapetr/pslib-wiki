@@ -44,7 +44,6 @@ import { FileHandler } from "@tiptap-pro/extension-file-handler";
 import { uploadFileToS3 } from "@/app/doc/[id]/actions";
 import { Image } from "@tiptap/extension-image";
 import { useAuth } from "@clerk/nextjs";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const suggestions = createSuggestionsItems([
   {
