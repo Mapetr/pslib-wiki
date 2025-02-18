@@ -51,17 +51,19 @@ export default function Header() {
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-              {collections.map((collection) => (
-                <DropdownMenuItem
-                  key={collection.id.toString()}
-                  onClick={() => {
-                    setOpen(false);
-                    setCurrentCollection(collection.id.toString());
-                  }}
-                >
-                  <span>{collection.name}</span>
-                </DropdownMenuItem>
-              ))}
+              {collections
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((collection) => (
+                  <DropdownMenuItem
+                    key={collection.id.toString()}
+                    onClick={() => {
+                      setOpen(false);
+                      setCurrentCollection(collection.id.toString());
+                    }}
+                  >
+                    <span>{collection.name}</span>
+                  </DropdownMenuItem>
+                ))}
               <SignedIn>
                 <DialogTrigger asChild>
                   <DropdownMenuItem
