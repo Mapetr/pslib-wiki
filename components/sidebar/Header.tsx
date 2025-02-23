@@ -26,6 +26,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { SignedIn } from "@clerk/nextjs";
 
 export default function Header() {
   const [currentCollection, setCurrentCollection] = useAtom(
@@ -36,12 +37,13 @@ export default function Header() {
     collections.find((el) => el.id.toString() === currentCollection)?.name ??
     "Select collection";
   const [newCollName, setNewCollName] = useState("");
+  const [open, setOpen] = useState(false);
 
   return (
     <SidebarMenu>
       <SidebarMenuItem>
         <Dialog>
-          <DropdownMenu>
+          <DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton>
                 {currentCollectionName}
@@ -49,21 +51,30 @@ export default function Header() {
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-              {collections.map((collection) => (
-                <DropdownMenuItem
-                  key={collection.id.toString()}
-                  onClick={() => {
-                    setCurrentCollection(collection.id.toString());
-                  }}
-                >
-                  <span>{collection.name}</span>
-                </DropdownMenuItem>
-              ))}
-              <DialogTrigger asChild>
-                <DropdownMenuItem>
-                  <span>Add collection</span>
-                </DropdownMenuItem>
-              </DialogTrigger>
+              {collections
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((collection) => (
+                  <DropdownMenuItem
+                    key={collection.id.toString()}
+                    onClick={() => {
+                      setOpen(false);
+                      setCurrentCollection(collection.id.toString());
+                    }}
+                  >
+                    <span>{collection.name}</span>
+                  </DropdownMenuItem>
+                ))}
+              <SignedIn>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setOpen(false);
+                    }}
+                  >
+                    <span>Add collection</span>
+                  </DropdownMenuItem>
+                </DialogTrigger>
+              </SignedIn>
             </DropdownMenuContent>
           </DropdownMenu>
           <DialogContent>

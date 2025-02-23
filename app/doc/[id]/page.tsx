@@ -1,10 +1,15 @@
 import Editor from "@/components/Editor";
-import { SignedIn, SignedOut } from "@clerk/nextjs";
 import { connectionPool, DOCUMENTS_NAME } from "@/lib/surrealdb";
 import { Document } from "@/lib/types";
 import { redirect } from "next/navigation";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import {
+  GetCollectionFromDocument,
+  GetDocumentName,
+} from "@/app/doc/[id]/actions";
+import { SetCollectionFromDocument } from "./collectionSet";
+import { Metadata, ResolvingMetadata } from "next";
 
 async function getDocument(id: string) {
   await connection();
@@ -50,19 +55,34 @@ async function Content({
     return;
   }
 
+  const collectionId = await GetCollectionFromDocument(row.id);
+
   return (
     <div className={"flex justify-center"}>
-      <SignedOut>
-        <div
-          className={
-            "prose prose-base prose-invert mx-8 my-4 prose-headings:mb-4 prose-p:mb-2 prose-p:mt-0"
-          }
-          dangerouslySetInnerHTML={{ __html: row.content }}
-        />
-      </SignedOut>
-      <SignedIn>
-        <Editor content={row.content} id={row.id.toString()} />
-      </SignedIn>
+      <SetCollectionFromDocument collectionId={collectionId} />
+      <Editor content={row.content} id={row.id.toString()} />
     </div>
   );
+}
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ id: string }> },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const id = (await params).id;
+
+  const previousImages = (await parent).openGraph?.images || [];
+  const prevName = (await parent).title;
+
+  let name = await GetDocumentName(id);
+  if (name === "") {
+    name = prevName?.absolute ?? "";
+  }
+
+  return {
+    title: name,
+    openGraph: {
+      images: ["/some-specific-page-image.jpg", ...previousImages],
+    },
+  };
 }

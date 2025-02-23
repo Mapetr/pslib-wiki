@@ -36,6 +36,8 @@ export default function Footer() {
       <Link
         className="mt-2 text-center text-xs text-muted-foreground"
         href={"https://github.com/Mapetr/pslib-wiki"}
+        target={"_blank"}
+        rel={"noopener noreferrer"}
       >
         {`Commit: ${process.env.NEXT_PUBLIC_GIT_HASH || "unknown"}  |  Env: ${process.env.NODE_ENV}`}
       </Link>
