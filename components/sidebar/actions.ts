@@ -16,8 +16,11 @@ import {
   FolderContains,
 } from "@/lib/types";
 import { revalidateTag } from "next/cache";
+import { DocumentsIndex } from "@/lib/meilisearch";
 
 export async function UpdateDocumentName(id: string, name: string) {
+  if (!name) return;
+
   const { userId } = await auth();
 
   if (!userId) {
@@ -29,9 +32,17 @@ export async function UpdateDocumentName(id: string, name: string) {
     // language=SQL format=false
     await db.query(
       `UPDATE ${id}
-       SET name = "${name}"`,
+       SET name = $name`,
+      {
+        name: name,
+      },
     );
-    revalidateTag("documents");
+    await DocumentsIndex.updateDocuments([
+      {
+        id: id.split(":")[1],
+        name: name,
+      },
+    ]);
   } finally {
     connectionPool.release(db);
   }
@@ -48,7 +59,7 @@ export async function DeleteDocument(id: string) {
   try {
     // language=SQL format=false
     await db.query(`DELETE ${id}`);
-    revalidateTag("documents");
+    await DocumentsIndex.deleteDocument(id.split(":")[1]);
     return true;
   } finally {
     connectionPool.release(db);

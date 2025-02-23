@@ -266,6 +266,7 @@ export default function DocumentActionButton({
               <Button
                 type="submit"
                 onClick={async () => {
+                  if (name === "") return;
                   await UpdateDocumentName(item.id, name);
 
                   const docIndex = currentCollection.documents.findIndex(

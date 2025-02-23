@@ -21,8 +21,21 @@ services:
       - 8000:8000
     volumes:
       - dbdata:/data
+    networks:
+      - db
     depends_on:
       - init-data
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.13.0
+    env_file:
+      - .env
+    ports:
+      - 7700:7700
+    volumes:
+      - meili:/meili_data
+    networks:
+      - meili
 
   next-app:
     build:
@@ -33,8 +46,16 @@ services:
     restart: always
     ports:
       - 3000:3000
+    networks:
+      - meili
+      - db
     depends_on:
       - surrealdb
 
+networks:
+  db:
+  meili:
+
 volumes:
   dbdata:
+  meili:

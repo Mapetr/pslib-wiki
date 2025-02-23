@@ -10,6 +10,8 @@ import {
 import { Document, Folder } from "@/lib/types";
 import { revalidateTag } from "next/cache";
 import { stringToRecordId } from "@/lib/utils";
+import { DocumentsIndex } from "@/lib/meilisearch";
+import sanitizeHtml from "sanitize-html";
 
 export async function createDocument(
   collectionId: string,
@@ -27,7 +29,7 @@ export async function createDocument(
       `
     CREATE ${DOCUMENTS_NAME} CONTENT {
       name: $name,
-      content: "<p></p>"
+      content: "<p></p>",
     };
     `,
       { name: name },
@@ -37,7 +39,13 @@ export async function createDocument(
       CONTAINS_NAME,
       result[0].id,
     );
-    revalidateTag("documents");
+    await DocumentsIndex.addDocuments([
+      {
+        id: result[0].id.toString().split(":")[1],
+        name: name,
+        content: "",
+      },
+    ]);
     return {
       id: result[0].id.toString(),
       name: result[0].name,
@@ -83,11 +91,41 @@ export async function saveDocument(id: string, content: string) {
 
   const db = await connectionPool.acquire();
   try {
-    await db.query(`UPDATE ${id} SET content = $content;`, {
-      content: content,
-    });
+    await db.query(
+      `UPDATE ${id}
+       SET content = $content,
+           content_embedding = $embedding`,
+      {
+        content: sanitizeHtml(content, {
+          allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+        }),
+      },
+    );
+    await DocumentsIndex.updateDocuments([
+      {
+        id: id.split(":")[1],
+        content: sanitizeHtml(content, {
+          allowedTags: [],
+          allowedAttributes: {},
+        }),
+      },
+    ]);
     return true;
   } finally {
     connectionPool.release(db);
   }
+}
+
+export interface SearchResult {
+  id: string;
+  name: string;
+}
+
+export async function searchDocument(search: string) {
+  if (!search) return [];
+  const result = await DocumentsIndex.search(search, {
+    attributesToRetrieve: ["id", "name"],
+    limit: 5,
+  });
+  return result.hits as SearchResult[];
 }
