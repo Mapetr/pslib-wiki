@@ -58,7 +58,7 @@ async function Content({
   const collectionId = await GetCollectionFromDocument(row.id);
 
   return (
-    <div className={"flex justify-center"}>
+    <div className={"mb-96 flex justify-center"}>
       <SetCollectionFromDocument collectionId={collectionId} />
       <Editor content={row.content} id={row.id.toString()} />
     </div>
