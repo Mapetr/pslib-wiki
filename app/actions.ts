@@ -11,6 +11,7 @@ import { Document, Folder } from "@/lib/types";
 import { revalidateTag } from "next/cache";
 import { stringToRecordId } from "@/lib/utils";
 import { DocumentsIndex } from "@/lib/meilisearch";
+import sanitizeHtml from "sanitize-html";
 
 export async function createDocument(
   collectionId: string,
@@ -38,6 +39,13 @@ export async function createDocument(
       CONTAINS_NAME,
       result[0].id,
     );
+    await DocumentsIndex.addDocuments([
+      {
+        id: result[0].id.toString().split(":")[1],
+        name: name,
+        content: "",
+      },
+    ]);
     return {
       id: result[0].id.toString(),
       name: result[0].name,
@@ -88,16 +96,20 @@ export async function saveDocument(id: string, content: string) {
        SET content = $content,
            content_embedding = $embedding`,
       {
-        content: content,
+        content: sanitizeHtml(content, {
+          allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),
+        }),
       },
     );
-    const resp = await DocumentsIndex.updateDocuments([
+    await DocumentsIndex.updateDocuments([
       {
         id: id.split(":")[1],
-        content: content,
+        content: sanitizeHtml(content, {
+          allowedTags: [],
+          allowedAttributes: {},
+        }),
       },
     ]);
-    console.log(resp);
     return true;
   } finally {
     connectionPool.release(db);
