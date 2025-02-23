@@ -6,6 +6,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarHeader,
+  SidebarSeparator,
 } from "@/components/ui/sidebar";
 import Footer from "@/components/sidebar/Footer";
 import Header from "@/components/sidebar/Header";
@@ -51,6 +52,7 @@ export default function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <Header />
+        <SidebarSeparator />
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

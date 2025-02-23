@@ -11,13 +11,15 @@ import {
 } from "./ui/command";
 import { useDebouncedCallback } from "use-debounce";
 import { searchDocument, SearchResult } from "@/app/actions";
+import { CommandLoading } from "cmdk";
+import { useRouter } from "next/navigation";
 
 export function Command() {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const [results, setResults] = useState(
-    undefined as SearchResult[] | undefined,
-  );
+  const [results, setResults] = useState([] as SearchResult[]);
+  const router = useRouter();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -32,8 +34,10 @@ export function Command() {
 
   const updateSearch = useDebouncedCallback(async (search: string) => {
     const results = await searchDocument(search);
+    setLoading(false);
+    if (!results) return;
     setResults(results);
-  }, 400);
+  }, 300);
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
@@ -41,16 +45,36 @@ export function Command() {
         placeholder="Type to search..."
         value={search}
         onValueChange={(search) => {
-          console.log("change");
+          setLoading(true);
           setSearch(search);
           updateSearch(search);
         }}
       />
       <CommandList>
+        {loading && (
+          <CommandLoading
+            className={
+              "mt-2 flex w-full justify-center text-sm text-muted-foreground"
+            }
+          >
+            Searching...
+          </CommandLoading>
+        )}
         <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Results">
-          {results?.map((result) => (
-            <CommandItem key={result.id}>{result.name}</CommandItem>
+          {results.map((result) => (
+            <CommandItem
+              key={result.id}
+              value={result.id}
+              onSelect={(value) => {
+                router.push(`/doc/${value}`);
+                setOpen(false);
+                setSearch("");
+                setResults([]);
+              }}
+            >
+              {result.name}
+            </CommandItem>
           ))}
         </CommandGroup>
       </CommandList>

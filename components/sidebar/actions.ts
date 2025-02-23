@@ -16,6 +16,7 @@ import {
   FolderContains,
 } from "@/lib/types";
 import { revalidateTag } from "next/cache";
+import { DocumentsIndex } from "@/lib/meilisearch";
 
 export async function UpdateDocumentName(id: string, name: string) {
   if (!name) return;
@@ -26,31 +27,22 @@ export async function UpdateDocumentName(id: string, name: string) {
     return { message: "You must be signed in" };
   }
 
-  const embeddings: number[] = await fetch(
-    "http://localhost:11434/api/embeddings",
-    {
-      method: "POST",
-      body: JSON.stringify({
-        model: "nomic-embed-text",
-        prompt: name,
-      }),
-    },
-  ).then(async (result) => {
-    const json = await result.json();
-    return json.embedding;
-  });
-
   const db = await connectionPool.acquire();
   try {
     // language=SQL format=false
     await db.query(
       `UPDATE ${id}
-       SET name = $name, name_embedding = $embedding`,
+       SET name = $name`,
       {
         name: name,
-        embedding: embeddings,
       },
     );
+    await DocumentsIndex.updateDocuments([
+      {
+        id: id.split(":")[1],
+        name: name,
+      },
+    ]);
   } finally {
     connectionPool.release(db);
   }
@@ -67,6 +59,7 @@ export async function DeleteDocument(id: string) {
   try {
     // language=SQL format=false
     await db.query(`DELETE ${id}`);
+    await DocumentsIndex.deleteDocument(id.split(":")[1]);
     revalidateTag("documents");
     return true;
   } finally {
@@ -225,9 +218,7 @@ export async function GetContent(
             return {
               id: doc.id.toString(),
               name: doc.name,
-              name_embedding: [],
               content: doc.content,
-              content_embedding: [],
               createdAt: doc.createdAt,
             };
           }),
@@ -240,9 +231,7 @@ export async function GetContent(
                 return {
                   id: doc.id.toString(),
                   name: doc.name,
-                  name_embedding: [],
                   content: doc.content,
-                  content_embedding: [],
                   createdAt: doc.createdAt,
                 };
               }),

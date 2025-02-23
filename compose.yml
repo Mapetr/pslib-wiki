@@ -26,16 +26,16 @@ services:
     depends_on:
       - init-data
 
-  ollama:
-    image: ollama/ollama:latest
+  meilisearch:
+    image: getmeili/meilisearch:v1.13.0
+    env_file:
+      - .env
+    ports:
+      - 7700:7700
     volumes:
-      -  ollama:/root/.ollama
-      - ./ollama/entrypoint.sh:/entrypoint.sh
-    container_name: ollama
-    restart: always
-    entrypoint: [ "/usr/bin/bash", "/entrypoint.sh" ]
+      - meili:/meili_data
     networks:
-      - ollama
+      - meili
 
   next-app:
     build:
@@ -47,15 +47,15 @@ services:
     ports:
       - 3000:3000
     networks:
-      - ollama
+      - meili
       - db
     depends_on:
       - surrealdb
 
 networks:
   db:
-  ollama:
+  meili:
 
 volumes:
   dbdata:
-  ollama:
+  meili:
