@@ -37,7 +37,7 @@ export function Command() {
     setLoading(false);
     if (!results) return;
     setResults(results);
-  }, 300);
+  }, 200);
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>

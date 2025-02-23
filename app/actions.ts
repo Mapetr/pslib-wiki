@@ -125,7 +125,7 @@ export async function searchDocument(search: string) {
   if (!search) return [];
   const result = await DocumentsIndex.search(search, {
     attributesToRetrieve: ["id", "name"],
+    limit: 5,
   });
-  console.log(result);
   return result.hits as SearchResult[];
 }

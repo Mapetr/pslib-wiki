@@ -60,7 +60,6 @@ export async function DeleteDocument(id: string) {
     // language=SQL format=false
     await db.query(`DELETE ${id}`);
     await DocumentsIndex.deleteDocument(id.split(":")[1]);
-    revalidateTag("documents");
     return true;
   } finally {
     connectionPool.release(db);
