@@ -68,6 +68,20 @@ const suggestions = createSuggestionsItems([
     },
   },
   {
+    title: "Heading 4",
+    searchTerms: ["heading", "h4"],
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).setHeading({ level: 4 }).run();
+    },
+  },
+  {
+    title: "Heading 5",
+    searchTerms: ["heading", "h5"],
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).setHeading({ level: 5 }).run();
+    },
+  },
+  {
     title: "Code block",
     searchTerms: ["code", "block"],
     command: ({ editor, range }) => {
@@ -184,7 +198,7 @@ export default function Editor({
         },
       }),
       HardBreak,
-      Heading.configure({ levels: [1, 2, 3] }),
+      Heading.configure({ levels: [1, 2, 3, 4, 5] }),
       HorizontalRule,
       Image,
       ListItem,
