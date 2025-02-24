@@ -61,7 +61,7 @@ export async function createFolder(collectionId: string, name: string) {
   const { userId } = await auth();
 
   if (!userId) {
-    return "";
+    return {} as unknown as Folder;
   }
 
   const db = await connectionPool.acquire();
@@ -75,8 +75,10 @@ export async function createFolder(collectionId: string, name: string) {
       CONTAINS_NAME,
       result[0].id,
     );
-    revalidateTag("documents");
-    return result[0].id.toString();
+    return {
+      ...result[0],
+      id: result[0].id.toString(),
+    };
   } finally {
     connectionPool.release(db);
   }

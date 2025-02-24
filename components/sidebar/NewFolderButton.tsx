@@ -16,18 +16,27 @@ import { Input } from "@/components/ui/input";
 import { SidebarMenuButton } from "@/components/ui/sidebar";
 import { Plus } from "lucide-react";
 import { createFolder } from "@/app/actions";
-import { useRouter } from "next/navigation";
-import { useAtomValue } from "jotai/index";
-import { selectedCollectionAtom } from "@/atoms";
+import { currentCollectionAtom, selectedCollectionAtom } from "@/atoms";
+import { useAtomValue, useSetAtom } from "jotai";
 
 export default function NewFolderButton() {
   const selectedCollectionId = useAtomValue(selectedCollectionAtom);
   const [name, setName] = useState("");
-  const router = useRouter();
+  const setCurrentCollection = useSetAtom(currentCollectionAtom);
 
   async function newFolder() {
-    await createFolder(selectedCollectionId, name);
-    router.refresh();
+    const folder = await createFolder(selectedCollectionId, name);
+    if (!folder.id) return;
+    setCurrentCollection((prevState) => {
+      prevState.folders.push({
+        ...folder,
+        documents: [],
+      });
+
+      return {
+        ...prevState,
+      };
+    });
   }
 
   return (
