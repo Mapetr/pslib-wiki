@@ -11,6 +11,12 @@ import Link from "next/link";
 import { SignedIn } from "@clerk/nextjs";
 import DocumentActionButton from "@/components/sidebar/DocumentActionButton";
 import { usePathname } from "next/navigation";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import SidebarContextMenu from "@/components/sidebar/SidebarContextMenu";
 
 export default function DocumentButton({
   item,
@@ -46,17 +52,22 @@ export default function DocumentButton({
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton
-        asChild
-        isActive={pathname.split("/").pop() === linkId}
-      >
-        <Link href={`/doc/${linkId}`} onClick={() => setOpenMobile(false)}>
-          {item.name}
-        </Link>
-      </SidebarMenuButton>
-      <SignedIn>
-        <DocumentActionButton item={item} folders={folders} key={item.id} />
-      </SignedIn>
+      <ContextMenu>
+        <ContextMenuTrigger>
+          <SidebarMenuButton
+            asChild
+            isActive={pathname.split("/").pop() === linkId}
+          >
+            <Link href={`/doc/${linkId}`} onClick={() => setOpenMobile(false)}>
+              {item.name}
+            </Link>
+          </SidebarMenuButton>
+        </ContextMenuTrigger>
+        <SidebarContextMenu item={item} folders={folders} />
+      </ContextMenu>
+      {/*<SignedIn>*/}
+      {/*  <DocumentActionButton item={item} folders={folders} key={item.id} />*/}
+      {/*</SignedIn>*/}
     </SidebarMenuItem>
   );
 }
