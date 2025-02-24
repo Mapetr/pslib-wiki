@@ -59,13 +59,10 @@ async function Content({
   const collectionId = await GetCollectionFromDocument(row.id);
 
   return (
-    <>
-      <SearchButton />
-      <div className={"mb-96 w-full md:flex md:justify-center"}>
-        <SetCollectionFromDocument collectionId={collectionId} />
-        <Editor content={row.content} id={row.id.toString()} />
-      </div>
-    </>
+    <div className={"mb-96 w-full md:flex md:justify-center"}>
+      <SetCollectionFromDocument collectionId={collectionId} />
+      <Editor content={row.content} id={row.id.toString()} />
+    </div>
   );
 }
 

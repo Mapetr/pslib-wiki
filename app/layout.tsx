@@ -13,6 +13,7 @@ import { Suspense } from "react";
 import { CSPostHogProvider, JotaiProvider } from "@/app/providers";
 import { WebVitals } from "@/app/web-vitals";
 import { Command } from "@/components/Command";
+import SearchButton from "@/components/SearchButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,6 +56,7 @@ export default function RootLayout({
                     <SidebarTrigger
                       className={"ml-4 mt-2 md:absolute md:left-4 md:top-4"}
                     />
+                    <SearchButton />
                     {children}
                   </SidebarInset>
                 </SidebarProvider>
