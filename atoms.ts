@@ -12,3 +12,4 @@ export const currentCollectionAtom = atom({
 } as CollectionContent);
 
 export const collectionsAtom = atom([] as CollectionContent[]);
+export const commandAtom = atom(false);

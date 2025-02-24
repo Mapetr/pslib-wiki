@@ -13,9 +13,11 @@ import { useDebouncedCallback } from "use-debounce";
 import { searchDocument, SearchResult } from "@/app/actions";
 import { CommandLoading } from "cmdk";
 import { useRouter } from "next/navigation";
+import { useAtom } from "jotai";
+import { commandAtom } from "@/atoms";
 
 export function Command() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useAtom(commandAtom);
   const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
   const [results, setResults] = useState([] as SearchResult[]);

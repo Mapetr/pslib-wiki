@@ -218,7 +218,7 @@ export default function Editor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-invert prose-base w-[65ch] prose-p:mt-0 prose-headings:mb-4 prose-p:mb-2 m-5 px-8 focus:outline-none",
+          "prose prose-invert prose-base w-lvw md:w-[65ch] prose-p:mt-0 prose-headings:mb-4 prose-p:mb-2 md:m-5 md:px-8 focus:outline-none",
       },
     },
     content: content,

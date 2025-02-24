@@ -10,6 +10,7 @@ import {
 } from "@/app/doc/[id]/actions";
 import { SetCollectionFromDocument } from "./collectionSet";
 import { Metadata, ResolvingMetadata } from "next";
+import SearchButton from "@/components/SearchButton";
 
 async function getDocument(id: string) {
   await connection();
@@ -58,10 +59,13 @@ async function Content({
   const collectionId = await GetCollectionFromDocument(row.id);
 
   return (
-    <div className={"mb-96 flex justify-center"}>
-      <SetCollectionFromDocument collectionId={collectionId} />
-      <Editor content={row.content} id={row.id.toString()} />
-    </div>
+    <>
+      <SearchButton />
+      <div className={"mb-96 w-full md:flex md:justify-center"}>
+        <SetCollectionFromDocument collectionId={collectionId} />
+        <Editor content={row.content} id={row.id.toString()} />
+      </div>
+    </>
   );
 }
 
