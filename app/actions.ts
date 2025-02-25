@@ -8,7 +8,6 @@ import {
   FOLDERS_NAME,
 } from "@/lib/surrealdb";
 import { Document, Folder } from "@/lib/types";
-import { revalidateTag } from "next/cache";
 import { stringToRecordId } from "@/lib/utils";
 import { DocumentsIndex } from "@/lib/meilisearch";
 import sanitizeHtml from "sanitize-html";

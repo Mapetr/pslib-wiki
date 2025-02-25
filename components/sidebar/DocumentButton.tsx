@@ -8,14 +8,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { SignedIn } from "@clerk/nextjs";
-import DocumentActionButton from "@/components/sidebar/DocumentActionButton";
 import { usePathname } from "next/navigation";
-import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu";
+import { ContextMenu, ContextMenuTrigger } from "@/components/ui/context-menu";
 import SidebarContextMenu from "@/components/sidebar/SidebarContextMenu";
 
 export default function DocumentButton({

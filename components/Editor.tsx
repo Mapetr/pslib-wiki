@@ -2,9 +2,9 @@
 
 import {
   BubbleMenu as BubbleMenuJsx,
+  Editor as EditorType,
   EditorContent,
   useEditor,
-  Editor as EditorType,
 } from "@tiptap/react";
 import CodeBlockShiki from "tiptap-extension-code-block-shiki";
 import { Blockquote } from "@tiptap/extension-blockquote";
