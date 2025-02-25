@@ -34,18 +34,23 @@ export default function DocumentButton({
 
   if (submenu) {
     return (
-      <SidebarMenuSubItem className={"relative"}>
-        <SidebarMenuSubButton
-          asChild
-          isActive={pathname.split("/").pop() === linkId}
-        >
-          <Link href={`/doc/${linkId}`} onClick={() => setOpenMobile(false)}>
-            {item.name}
-          </Link>
-        </SidebarMenuSubButton>
-        <SignedIn>
-          <DocumentActionButton item={item} folders={folders} key={item.id} />
-        </SignedIn>
+      <SidebarMenuSubItem>
+        <ContextMenu>
+          <ContextMenuTrigger>
+            <SidebarMenuSubButton
+              asChild
+              isActive={pathname.split("/").pop() === linkId}
+            >
+              <Link
+                href={`/doc/${linkId}`}
+                onClick={() => setOpenMobile(false)}
+              >
+                {item.name}
+              </Link>
+            </SidebarMenuSubButton>
+          </ContextMenuTrigger>
+          <SidebarContextMenu item={item} folders={folders} />
+        </ContextMenu>
       </SidebarMenuSubItem>
     );
   }
@@ -65,9 +70,6 @@ export default function DocumentButton({
         </ContextMenuTrigger>
         <SidebarContextMenu item={item} folders={folders} />
       </ContextMenu>
-      {/*<SignedIn>*/}
-      {/*  <DocumentActionButton item={item} folders={folders} key={item.id} />*/}
-      {/*</SignedIn>*/}
     </SidebarMenuItem>
   );
 }

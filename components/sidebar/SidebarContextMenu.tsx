@@ -29,7 +29,6 @@ import {
   ContextMenuSubContent,
   ContextMenuSubTrigger,
 } from "@/components/ui/context-menu";
-import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -166,49 +165,47 @@ export default function SidebarContextMenu({
           <ContextMenuSub>
             <ContextMenuSubTrigger>Move to collection</ContextMenuSubTrigger>
             <ContextMenuSubContent>
-              <ContextMenuSubContent>
-                {collections.map((collection) => (
-                  <ContextMenuItem
-                    key={collection.id}
-                    onClick={() => {
-                      MoveToCollection(item.id, collection.id);
+              {collections.map((collection) => (
+                <ContextMenuItem
+                  key={collection.id}
+                  onClick={() => {
+                    MoveToCollection(item.id, collection.id);
 
-                      const docIndex = currentCollection.documents.findIndex(
-                        (x) => x.id === item.id,
-                      );
+                    const docIndex = currentCollection.documents.findIndex(
+                      (x) => x.id === item.id,
+                    );
 
-                      if (docIndex !== -1) {
+                    if (docIndex !== -1) {
+                      setCurrentCollection((prevState) => {
+                        prevState.documents.splice(docIndex, 1);
+
+                        return { ...prevState };
+                      });
+                    } else {
+                      for (
+                        let i = 0;
+                        i < currentCollection.folders.length;
+                        i++
+                      ) {
+                        const folder = currentCollection.folders[i];
+
+                        const docIndex = folder.documents.findIndex(
+                          (x) => x.id === item.id,
+                        );
+                        if (docIndex === -1) continue;
+
                         setCurrentCollection((prevState) => {
-                          prevState.documents.splice(docIndex, 1);
+                          prevState.folders[i].documents.splice(docIndex, 1);
 
                           return { ...prevState };
                         });
-                      } else {
-                        for (
-                          let i = 0;
-                          i < currentCollection.folders.length;
-                          i++
-                        ) {
-                          const folder = currentCollection.folders[i];
-
-                          const docIndex = folder.documents.findIndex(
-                            (x) => x.id === item.id,
-                          );
-                          if (docIndex === -1) continue;
-
-                          setCurrentCollection((prevState) => {
-                            prevState.folders[i].documents.splice(docIndex, 1);
-
-                            return { ...prevState };
-                          });
-                        }
                       }
-                    }}
-                  >
-                    {collection.name}
-                  </ContextMenuItem>
-                ))}
-              </ContextMenuSubContent>
+                    }
+                  }}
+                >
+                  {collection.name}
+                </ContextMenuItem>
+              ))}
             </ContextMenuSubContent>
           </ContextMenuSub>
         </ContextMenuContent>
