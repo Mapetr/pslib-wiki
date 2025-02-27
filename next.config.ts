@@ -14,10 +14,6 @@ const nextConfig: NextConfig = {
   },
   serverExternalPackages: ["surrealdb"],
   output: "standalone",
-  experimental: {
-    ppr: true,
-    dynamicIO: true,
-  },
   env: {
     NEXT_PUBLIC_GIT_HASH: GIT_HASH,
   },

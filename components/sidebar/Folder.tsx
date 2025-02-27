@@ -34,11 +34,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import {
-  DeleteDocument,
-  DeleteFolder,
-  UpdateFolderName,
-} from "@/components/sidebar/actions";
+import { DeleteFolder, UpdateFolderName } from "@/components/sidebar/actions";
 import { useSetAtom } from "jotai";
 import { currentCollectionAtom } from "@/atoms";
 import {
