@@ -48,6 +48,30 @@ export async function UpdateDocumentName(id: string, name: string) {
   }
 }
 
+export async function UpdateFolderName(id: string, name: string) {
+  if (!name) return;
+
+  const { userId } = await auth();
+
+  if (!userId) {
+    return { message: "You must be signed in" };
+  }
+
+  const db = await connectionPool.acquire();
+  try {
+    // language=SQL format=false
+    await db.query(
+      `UPDATE ${id}
+       SET name = $name`,
+      {
+        name: name,
+      },
+    );
+  } finally {
+    connectionPool.release(db);
+  }
+}
+
 export async function DeleteDocument(id: string) {
   const { userId } = await auth();
 
@@ -66,6 +90,32 @@ export async function DeleteDocument(id: string) {
   }
 }
 
+export async function DeleteFolder(id: string) {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return false;
+  }
+
+  const db = await connectionPool.acquire();
+  try {
+    // language=SQL format=false
+    const [folderDocuments] = await db.query<[{ id: string }[]]>(
+      `SELECT id FROM ${DOCUMENTS_NAME} 
+       WHERE id IN (SELECT out FROM ${FOLDER_CONTAINS_NAME} WHERE in = ${id})`,
+    );
+
+    for (const doc of folderDocuments) {
+      await MoveDocument(doc.id, null);
+    }
+
+    // language=SQL format=false
+    await db.query(`DELETE ${id}`);
+    return true;
+  } finally {
+    connectionPool.release(db);
+  }
+}
 export async function MoveDocument(id: string, folderId: string | null) {
   const { userId } = await auth();
 

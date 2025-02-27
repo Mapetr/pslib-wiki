@@ -60,7 +60,7 @@ export default function SidebarContextMenu({
             <ContextMenuItem>Edit name</ContextMenuItem>
           </DialogTrigger>
           <AlertDialogTrigger asChild>
-            <ContextMenuItem>Delete Document</ContextMenuItem>
+            <ContextMenuItem>Delete</ContextMenuItem>
           </AlertDialogTrigger>
           <ContextMenuSub>
             <ContextMenuSubTrigger>Move to folder</ContextMenuSubTrigger>
