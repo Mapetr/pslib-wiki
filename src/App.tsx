@@ -1,39 +1,16 @@
-import "./App.css";
-import { Authenticated, Unauthenticated, useMutation } from "convex/react";
-import { SignInButton, UserButton } from "@clerk/clerk-react";
-import { useRef } from "react";
-import { api } from "../convex/_generated/api";
+import { SidebarProvider } from "@/components/ui/sidebar.tsx";
+import AppSidebar from "@/components/AppSidebar.tsx";
+import Header from "@/components/Header.tsx";
 
 function App() {
   return (
-    <>
-      <Unauthenticated>
-        <SignInButton />
-      </Unauthenticated>
-      <Authenticated>
-        <UserButton />
-        <Content />
-      </Authenticated>
-    </>
-  );
-}
-
-function Content() {
-  const addCollection = useMutation(api.tasks.createCollection);
-  const input = useRef(null as HTMLInputElement | null);
-
-  return (
-    <div>
-      <input type={"text"} ref={input} />
-      <button
-        onClick={async () => {
-          if (!input.current || input.current.value === "") return;
-
-          await addCollection({ name: input.current?.value });
-        }}
-      >
-        Send
-      </button>
+    <div className={"bg-background"}>
+      <SidebarProvider>
+        <AppSidebar />
+        <main className={"flex w-full flex-col"}>
+          <Header />
+        </main>
+      </SidebarProvider>
     </div>
   );
 }
