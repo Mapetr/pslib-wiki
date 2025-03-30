@@ -13,6 +13,12 @@ export function Editor(props: { id: string }) {
       <EditorProvider
         content={sync.initialContent}
         extensions={[StarterKit, sync.extension]}
+        editorProps={{
+          attributes: {
+            class:
+              "prose prose-sm dark:prose-invert sm:prose-base m-5 focus:outline-none",
+          },
+        }}
       >
         <EditorContent editor={null} />
       </EditorProvider>

@@ -1,5 +1,5 @@
 import { SidebarProvider } from "@/components/ui/sidebar.tsx";
-import AppSidebar from "@/components/AppSidebar.tsx";
+import AppSidebar from "@/components/app-sidebar.tsx";
 import Header from "@/components/Header.tsx";
 import { useQuery } from "@tanstack/react-query";
 import { convexQuery } from "@convex-dev/react-query";
@@ -14,10 +14,9 @@ function App() {
   const { data, isPending, error } = useQuery(
     convexQuery(
       api.document.getDocument,
-      id !== "" ? { id: id as Id<"documents"> } : "skip",
+      id ? { id: id as Id<"documents"> } : "skip",
     ),
   );
-  console.log(data);
 
   return (
     <div className={"bg-background"}>
@@ -25,7 +24,9 @@ function App() {
         <AppSidebar />
         <main className={"flex w-full flex-col"}>
           <Header name={data?.name} />
-          <Editor id={"test"} />
+          {id ?
+            <Editor id={id} />
+          : <></>}
         </main>
       </SidebarProvider>
     </div>
