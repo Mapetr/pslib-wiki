@@ -1,11 +1,11 @@
-import "@blocknote/core/fonts/inter.css";
-import "@blocknote/shadcn/style.css";
 import { useTiptapSync } from "@convex-dev/prosemirror-sync/tiptap";
 import { api } from "../../convex/_generated/api";
-import { EditorContent, EditorProvider } from "@tiptap/react";
-import { StarterKit } from "@tiptap/starter-kit";
+import { EditorProvider } from "@tiptap/react";
 import { useUser } from "@clerk/clerk-react";
 import { Loader2 } from "lucide-react";
+import "katex/dist/katex.min.css";
+import EditorInside from "@/components/editor/editor-inside.tsx";
+import { EditorExtensions } from "@/components/editor/editor.ts";
 
 export function Editor(props: { id: string }) {
   const { isSignedIn, isLoaded } = useUser();
@@ -26,15 +26,15 @@ export function Editor(props: { id: string }) {
     <EditorProvider
       content={sync.initialContent}
       editable={isSignedIn}
-      extensions={[StarterKit, sync.extension]}
+      extensions={[...EditorExtensions, sync.extension]}
       editorProps={{
         attributes: {
           class:
-            "prose prose-sm dark:prose-invert sm:prose-base m-5 focus:outline-none",
+            "prose prose-base prose-zinc dark:prose-invert px-2 mx-auto min-h-screen border-l border-r border-dotted focus:outline-none",
         },
       }}
     >
-      <EditorContent editor={null} />
+      <EditorInside />
     </EditorProvider>
   );
 }

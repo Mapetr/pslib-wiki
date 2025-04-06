@@ -42,3 +42,20 @@ export const createDocument = mutation({
     });
   },
 });
+
+export const updateDocumentName = mutation({
+  args: {
+    id: v.id("documents"),
+    newName: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new Error("Not authenticated");
+    }
+
+    return await ctx.db.patch(args.id, {
+      name: args.newName,
+    });
+  },
+});

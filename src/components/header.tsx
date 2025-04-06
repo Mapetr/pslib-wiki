@@ -1,4 +1,6 @@
 import { SidebarTrigger } from "@/components/ui/sidebar.tsx";
+import { Input } from "@/components/ui/input.tsx";
+import { Authenticated, Unauthenticated } from "convex/react";
 
 export default function Header({ name }: { name: string | undefined }) {
   return (
@@ -8,7 +10,12 @@ export default function Header({ name }: { name: string | undefined }) {
       }
     >
       <SidebarTrigger />
-      <span className={"font-bold"}>{name}</span>
+      <Authenticated>
+        <Input className={"w-48 border-0 font-bold"} value={name} />
+      </Authenticated>
+      <Unauthenticated>
+        <span className={"font-bold"}>{name}</span>
+      </Unauthenticated>
     </header>
   );
 }
