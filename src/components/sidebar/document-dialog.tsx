@@ -1,6 +1,7 @@
 import {
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -46,6 +47,9 @@ export default function DocumentDialog() {
     <DialogContent>
       <DialogHeader>
         <DialogTitle>Add new document</DialogTitle>
+        <DialogDescription>
+          Add a new document to the currect collection
+        </DialogDescription>
       </DialogHeader>
       <div>
         <Input type={"text"} placeholder={"Name"} ref={inputRef} />
