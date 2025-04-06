@@ -6,6 +6,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { api } from "../convex/_generated/api";
 import { Id } from "../convex/_generated/dataModel";
 import { Editor } from "@/components/Editor.tsx";
+import { Loader2 } from "lucide-react";
 
 function App() {
   const pathname = window.location.pathname;
@@ -18,6 +19,10 @@ function App() {
     ),
   );
 
+  if (error) {
+    console.error(error);
+  }
+
   return (
     <div className={"bg-background"}>
       <SidebarProvider>
@@ -26,6 +31,8 @@ function App() {
           <Header name={data?.name} />
           {id ?
             <Editor id={id} />
+          : isPending ?
+            <Loader2 className={"animate-spin"} />
           : <></>}
         </main>
       </SidebarProvider>

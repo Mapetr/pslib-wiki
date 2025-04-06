@@ -7,10 +7,16 @@ import { StarterKit } from "@tiptap/starter-kit";
 
 export function Editor(props: { id: string }) {
   const sync = useTiptapSync(api.prosemirror, props.id);
-  return (
-    sync.isLoading ? <p>Loading</p>
-    : sync.initialContent !== null ?
-      <EditorProvider
+
+  if (!sync.isLoading && sync.initialContent === null) {
+    sync.create({ type: "doc", content: [] }).catch((err) => {
+      console.error("failed to create doc in sync", err);
+    });
+  }
+
+  return sync.isLoading || sync.initialContent === null ?
+      <p>Loading</p>
+    : <EditorProvider
         content={sync.initialContent}
         extensions={[StarterKit, sync.extension]}
         editorProps={{
@@ -21,9 +27,5 @@ export function Editor(props: { id: string }) {
         }}
       >
         <EditorContent editor={null} />
-      </EditorProvider>
-    : <button onClick={() => sync.create({ type: "doc", content: [] })}>
-        Create document
-      </button>
-  );
+      </EditorProvider>;
 }
