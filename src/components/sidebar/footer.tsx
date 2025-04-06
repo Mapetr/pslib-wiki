@@ -19,21 +19,23 @@ export default function Footer() {
   return (
     <SidebarFooter className={"flex flex-col"}>
       <SidebarMenu>
-        <SidebarMenuItem>
-          <Dialog>
-            <DialogTrigger asChild>
-              <SidebarMenuButton
-                className={"flex cursor-pointer items-center justify-between"}
-              >
-                <span>Add document</span>
-                <Plus />
-              </SidebarMenuButton>
-            </DialogTrigger>
-            <DialogContent>
-              <DocumentDialog />
-            </DialogContent>
-          </Dialog>
-        </SidebarMenuItem>
+        <Authenticated>
+          <SidebarMenuItem>
+            <Dialog>
+              <DialogTrigger asChild>
+                <SidebarMenuButton
+                  className={"flex cursor-pointer items-center justify-between"}
+                >
+                  <span>Add document</span>
+                  <Plus />
+                </SidebarMenuButton>
+              </DialogTrigger>
+              <DialogContent>
+                <DocumentDialog />
+              </DialogContent>
+            </Dialog>
+          </SidebarMenuItem>
+        </Authenticated>
         <SidebarMenuItem>
           <Authenticated>
             <UserButton
