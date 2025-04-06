@@ -1,8 +1,6 @@
 "use client";
 
-import * as React from "react";
 import { ChevronsUpDown, Plus } from "lucide-react";
-
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,13 +19,12 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "../../../convex/_generated/api";
-import { Doc } from "../../../convex/_generated/dataModel";
+import { activeCollectionAtom } from "../../../atoms.ts";
+import { useAtom } from "jotai";
 
 export function CollectionSwitcher() {
   const { isMobile } = useSidebar();
-  const [activeCollection, setActiveCollection] = React.useState(
-    {} as Doc<"collections">,
-  );
+  const [activeCollection, setActiveCollection] = useAtom(activeCollectionAtom);
 
   const collections = useQuery(convexQuery(api.collection.getCollections, {}));
 
