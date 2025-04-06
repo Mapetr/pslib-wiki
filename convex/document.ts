@@ -6,11 +6,6 @@ export const getDocument = query({
     id: v.id("documents"),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (identity === null) {
-      throw new Error("Not authenticated");
-    }
-
     return await ctx.db.get(args.id);
   },
 });
