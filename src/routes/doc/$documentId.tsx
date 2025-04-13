@@ -8,9 +8,5 @@ export const Route = createFileRoute("/doc/$documentId")({
 function RouteComponent() {
   const { documentId } = Route.useParams();
 
-  return (
-    <div className={"h-full"}>
-      <Editor key={documentId} id={documentId} />
-    </div>
-  );
+  return <Editor key={documentId} id={documentId} />;
 }

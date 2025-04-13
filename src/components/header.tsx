@@ -1,21 +1,44 @@
 import { SidebarTrigger } from "@/components/ui/sidebar.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { Authenticated, Unauthenticated } from "convex/react";
+import { Authenticated, Unauthenticated, useMutation } from "convex/react";
 import { useQuery } from "@tanstack/react-query";
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "../../convex/_generated/api";
 import { Id } from "../../convex/_generated/dataModel";
 import { useParams } from "@tanstack/react-router";
+import { useDebouncedCallback } from "use-debounce";
+import { useEffect, useState } from "react";
 
 export default function Header() {
+  const updateName = useMutation(api.document.updateDocumentName);
   const { documentId } = useParams({ strict: false });
+  const [name, setName] = useState("");
 
-  const { data, isPending, error } = useQuery(
+  const { data } = useQuery(
     convexQuery(
       api.document.getDocument,
       documentId ? { id: documentId as Id<"documents"> } : "skip",
     ),
   );
+
+  useEffect(() => {
+    if (!data) return;
+
+    setName(data.name);
+  }, [data]);
+
+  const debounced = useDebouncedCallback((value: string) => {
+    if (!data) return;
+    if (value === "") {
+      setName(data.name);
+      return;
+    }
+
+    updateName({
+      id: data._id,
+      newName: value,
+    });
+  }, 1000);
 
   return (
     <header
@@ -25,7 +48,15 @@ export default function Header() {
     >
       <SidebarTrigger />
       <Authenticated>
-        <Input className={"w-48 border-0 font-bold"} value={data?.name} />
+        <Input
+          className={"w-48 border-0 font-bold"}
+          value={name}
+          onChange={(e) => {
+            const name = e.target.value;
+            setName(name);
+            debounced(name);
+          }}
+        />
       </Authenticated>
       <Unauthenticated>
         <span className={"font-bold"}>{data?.name}</span>

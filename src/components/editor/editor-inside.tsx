@@ -8,7 +8,7 @@ export default function EditorInside() {
   if (!editor.editor) return;
 
   return (
-    <div className={"h-full"}>
+    <div>
       <DragHandle
         className={
           "flex h-6 w-6 items-center justify-center rounded-md border border-gray-700 bg-gray-500"
