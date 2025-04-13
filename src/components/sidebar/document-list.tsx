@@ -11,6 +11,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
+import { Link } from "@tanstack/react-router";
 
 export default function DocumentList() {
   const activeCollection = useAtomValue(activeCollectionAtom);
@@ -49,11 +50,17 @@ export default function DocumentList() {
               <SidebarMenuButton
                 className={"cursor-pointer"}
                 tooltip={doc.name}
-                onClick={() =>
-                  window.history.pushState({}, "", `/doc/${doc._id}`)
-                }
+                asChild
               >
-                <span>{doc.name}</span>
+                <Link
+                  to={"/doc/$documentId"}
+                  params={{
+                    documentId: doc._id,
+                  }}
+                  preload={"intent"}
+                >
+                  {doc.name}
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

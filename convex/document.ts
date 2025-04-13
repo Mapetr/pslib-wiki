@@ -59,3 +59,17 @@ export const updateDocumentName = mutation({
     });
   },
 });
+
+export const deleteDocument = mutation({
+  args: {
+    id: v.id("documents"),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (identity === null) {
+      throw new Error("Not authenticated");
+    }
+
+    await ctx.db.delete(args.id);
+  },
+});
