@@ -30,9 +30,10 @@ export function Editor(props: { id: string }) {
       editorProps={{
         attributes: {
           class:
-            "prose prose-base prose-zinc dark:prose-invert px-2 mx-auto min-h-screen border-l border-r border-dotted focus:outline-none",
+            "prose prose-base prose-zinc dark:prose-invert px-2 h-full mx-auto border-l border-r border-dotted focus:outline-none",
         },
       }}
+      editorContainerProps={{ className: "h-full" }}
     >
       <EditorInside />
     </EditorProvider>
