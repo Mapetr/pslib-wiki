@@ -10,6 +10,7 @@
 
 import type * as collection from "../collection.js";
 import type * as document from "../document.js";
+import type * as folder from "../folder.js";
 import type * as prosemirror from "../prosemirror.js";
 
 import type {
@@ -29,6 +30,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   collection: typeof collection;
   document: typeof document;
+  folder: typeof folder;
   prosemirror: typeof prosemirror;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
