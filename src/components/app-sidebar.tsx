@@ -7,6 +7,7 @@ import {
 import Footer from "@/components/sidebar/footer.tsx";
 import { CollectionSwitcher } from "@/components/sidebar/collection-switcher.tsx";
 import DocumentList from "@/components/sidebar/document-list.tsx";
+import FolderList from "@/components/sidebar/folder/folder-list.tsx";
 
 export default function AppSidebar() {
   return (
@@ -14,7 +15,8 @@ export default function AppSidebar() {
       <SidebarHeader>
         <CollectionSwitcher />
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className={"gap-0"}>
+        <FolderList />
         <DocumentList />
       </SidebarContent>
       <Footer />
