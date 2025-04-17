@@ -40,7 +40,7 @@ export default function FolderList() {
       <SidebarGroupContent>
         <SidebarMenu>
           {data.map((folder) => (
-            <SidebarMenuItem>
+            <SidebarMenuItem key={folder._id}>
               <FolderDocumentList id={folder._id} name={folder.name} />
             </SidebarMenuItem>
           ))}

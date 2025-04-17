@@ -29,6 +29,18 @@ export const getDocumentsFromCollection = query({
   },
 });
 
+export const moveToFolder = mutation({
+  args: {
+    docId: v.id("documents"),
+    folderId: v.optional(v.id("folders")),
+  },
+  handler: async (ctx, args) => {
+    return ctx.db.patch(args.docId, {
+      folders: args.folderId,
+    });
+  },
+});
+
 export const getDocumentsFromFolder = query({
   args: {
     folderId: v.id("folders"),

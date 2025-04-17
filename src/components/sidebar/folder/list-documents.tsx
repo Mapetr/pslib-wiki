@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { convexQuery } from "@convex-dev/react-query";
 import { api } from "../../../../convex/_generated/api";
 import { Link } from "@tanstack/react-router";
+import ButtonAction from "@/components/sidebar/button-action.tsx";
 
 export default function FolderDocumentList({
   id,
@@ -38,7 +39,7 @@ export default function FolderDocumentList({
   return (
     <Collapsible key={id} className={"group/collapsible"}>
       <CollapsibleTrigger asChild>
-        <SidebarMenuButton tooltip={name}>
+        <SidebarMenuButton tooltip={name} className={"cursor-pointer"}>
           <span>{name}</span>
           <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
         </SidebarMenuButton>
@@ -58,6 +59,7 @@ export default function FolderDocumentList({
                   {document.name}
                 </Link>
               </SidebarMenuSubButton>
+              <ButtonAction id={document._id} />
             </SidebarMenuSubItem>
           ))}
         </SidebarMenuSub>
