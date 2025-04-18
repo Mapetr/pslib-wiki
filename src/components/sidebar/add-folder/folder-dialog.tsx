@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "../../../../convex/_generated/api";
-import { useAtomValue } from "jotai/index";
+import { useAtomValue } from "jotai";
 import { activeCollectionAtom } from "../../../../atoms.ts";
 import {
   DialogClose,
