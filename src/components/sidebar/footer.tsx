@@ -1,40 +1,21 @@
 import {
   SidebarFooter,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
 import { Authenticated, Unauthenticated } from "convex/react";
 import { SignInButton, UserButton } from "@clerk/clerk-react";
 import { Button } from "@/components/ui/button.tsx";
-import { Plus } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog.tsx";
-import DocumentDialog from "@/components/sidebar/document-dialog.tsx";
+import AddDocumentButton from "@/components/sidebar/add-document/add-document.tsx";
+import AddFolderButton from "@/components/sidebar/add-folder/add-folder.tsx";
 
 export default function Footer() {
   return (
     <SidebarFooter className={"flex flex-col"}>
       <SidebarMenu>
         <Authenticated>
-          <SidebarMenuItem>
-            <Dialog>
-              <DialogTrigger asChild>
-                <SidebarMenuButton
-                  className={"flex cursor-pointer items-center justify-between"}
-                >
-                  <span>Add document</span>
-                  <Plus />
-                </SidebarMenuButton>
-              </DialogTrigger>
-              <DialogContent>
-                <DocumentDialog />
-              </DialogContent>
-            </Dialog>
-          </SidebarMenuItem>
+          <AddDocumentButton />
+          <AddFolderButton />
         </Authenticated>
         <SidebarMenuItem>
           <Authenticated>

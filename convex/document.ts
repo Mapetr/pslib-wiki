@@ -19,7 +19,38 @@ export const getDocumentsFromCollection = query({
 
     return ctx.db
       .query("documents")
-      .filter((q) => q.eq(q.field("collections"), args.collectionId))
+      .filter((q) =>
+        q.and(
+          q.eq(q.field("collections"), args.collectionId),
+          q.eq(q.field("folders"), undefined),
+        ),
+      )
+      .collect();
+  },
+});
+
+export const moveToFolder = mutation({
+  args: {
+    docId: v.id("documents"),
+    folderId: v.optional(v.id("folders")),
+  },
+  handler: async (ctx, args) => {
+    return ctx.db.patch(args.docId, {
+      folders: args.folderId,
+    });
+  },
+});
+
+export const getDocumentsFromFolder = query({
+  args: {
+    folderId: v.id("folders"),
+  },
+  handler: async (ctx, args) => {
+    if (args.folderId.length === 0) return [];
+
+    return ctx.db
+      .query("documents")
+      .filter((q) => q.eq(q.field("folders"), args.folderId))
       .collect();
   },
 });

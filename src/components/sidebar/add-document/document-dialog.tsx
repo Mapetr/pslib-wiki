@@ -9,11 +9,11 @@ import {
 import { Button } from "@/components/ui/button.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { useRef } from "react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 import { useMutation } from "@tanstack/react-query";
 import { useConvexMutation } from "@convex-dev/react-query";
 import { useAtomValue } from "jotai";
-import { activeCollectionAtom } from "../../../atoms.ts";
+import { activeCollectionAtom } from "../../../../atoms.ts";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils.ts";
 
@@ -48,7 +48,7 @@ export default function DocumentDialog() {
       <DialogHeader>
         <DialogTitle>Add new document</DialogTitle>
         <DialogDescription>
-          Add a new document to the currect collection
+          Add a new document to the current collection
         </DialogDescription>
       </DialogHeader>
       <div>

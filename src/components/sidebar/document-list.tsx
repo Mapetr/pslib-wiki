@@ -12,6 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar.tsx";
 import { Link } from "@tanstack/react-router";
+import ButtonAction from "@/components/sidebar/button-action.tsx";
 
 export default function DocumentList() {
   const activeCollection = useAtomValue(activeCollectionAtom);
@@ -62,6 +63,7 @@ export default function DocumentList() {
                   {doc.name}
                 </Link>
               </SidebarMenuButton>
+              <ButtonAction id={doc._id} />
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
