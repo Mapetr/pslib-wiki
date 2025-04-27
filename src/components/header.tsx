@@ -49,6 +49,9 @@ export default function Header() {
         <SidebarTrigger />
         {data && (
           <div>
+            <Unauthenticated>
+              <span className={"font-bold"}>{data?.name}</span>
+            </Unauthenticated>
             <Authenticated>
               <Input
                 className={"w-48 border-0 font-bold"}
@@ -60,17 +63,16 @@ export default function Header() {
                 }}
               />
             </Authenticated>
-            <Unauthenticated>
-              <span className={"font-bold"}>{data?.name}</span>
-            </Unauthenticated>
           </div>
         )}
       </div>
-      {data && (
-        <div className={"flex items-center"}>
-          <Delete id={data._id} />
-        </div>
-      )}
+      <Authenticated>
+        {data && (
+          <div className={"flex items-center"}>
+            <Delete id={data._id} />
+          </div>
+        )}
+      </Authenticated>
     </header>
   );
 }

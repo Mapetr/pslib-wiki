@@ -16,6 +16,7 @@ import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
 import { api } from "../../../convex/_generated/api";
 import { useAtomValue } from "jotai";
 import { activeCollectionAtom } from "../../../atoms.ts";
+import { Authenticated } from "convex/react";
 
 export default function ButtonAction({ id }: { id: Id<"documents"> }) {
   const activeCollection = useAtomValue(activeCollectionAtom);
@@ -31,44 +32,46 @@ export default function ButtonAction({ id }: { id: Id<"documents"> }) {
   });
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <SidebarMenuAction className={"cursor-pointer"}>
-          <MoreHorizontal />
-        </SidebarMenuAction>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align={"start"}>
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Move to folder</DropdownMenuSubTrigger>
-          <DropdownMenuPortal>
-            <DropdownMenuSubContent>
-              {folders?.map((folder) => (
+    <Authenticated>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <SidebarMenuAction className={"cursor-pointer"}>
+            <MoreHorizontal />
+          </SidebarMenuAction>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align={"start"}>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Move to folder</DropdownMenuSubTrigger>
+            <DropdownMenuPortal>
+              <DropdownMenuSubContent>
+                {folders?.map((folder) => (
+                  <DropdownMenuItem
+                    key={folder._id}
+                    onClick={() => {
+                      move({
+                        docId: id,
+                        folderId: folder._id,
+                      });
+                    }}
+                  >
+                    {folder.name}
+                  </DropdownMenuItem>
+                ))}
                 <DropdownMenuItem
-                  key={folder._id}
                   onClick={() => {
                     move({
                       docId: id,
-                      folderId: folder._id,
+                      folderId: undefined,
                     });
                   }}
                 >
-                  {folder.name}
+                  Unassign
                 </DropdownMenuItem>
-              ))}
-              <DropdownMenuItem
-                onClick={() => {
-                  move({
-                    docId: id,
-                    folderId: undefined,
-                  });
-                }}
-              >
-                Unassign
-              </DropdownMenuItem>
-            </DropdownMenuSubContent>
-          </DropdownMenuPortal>
-        </DropdownMenuSub>
-      </DropdownMenuContent>
-    </DropdownMenu>
+              </DropdownMenuSubContent>
+            </DropdownMenuPortal>
+          </DropdownMenuSub>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </Authenticated>
   );
 }

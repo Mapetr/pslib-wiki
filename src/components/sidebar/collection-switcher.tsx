@@ -21,6 +21,7 @@ import { convexQuery } from "@convex-dev/react-query";
 import { api } from "../../../convex/_generated/api";
 import { activeCollectionAtom } from "../../../atoms.ts";
 import { useAtom } from "jotai";
+import { Authenticated } from "convex/react";
 
 export function CollectionSwitcher() {
   const { isMobile } = useSidebar();
@@ -84,15 +85,17 @@ export function CollectionSwitcher() {
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="gap-2 p-2">
-              <div className="bg-background flex size-6 items-center justify-center rounded-md border">
-                <Plus className="size-4" />
-              </div>
-              <div className="text-muted-foreground font-medium">
-                Add collection
-              </div>
-            </DropdownMenuItem>
+            <Authenticated>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="gap-2 p-2">
+                <div className="bg-background flex size-6 items-center justify-center rounded-md border">
+                  <Plus className="size-4" />
+                </div>
+                <div className="text-muted-foreground font-medium">
+                  Add collection
+                </div>
+              </DropdownMenuItem>
+            </Authenticated>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
