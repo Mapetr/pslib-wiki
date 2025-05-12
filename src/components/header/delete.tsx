@@ -18,7 +18,7 @@ import { useNavigate } from "@tanstack/react-router";
 
 export function Delete({ id }: { id: Id<"documents"> }) {
   const deleteDocument = useMutation(api.document.deleteDocument);
-  const navigate = useNavigate({ from: "/doc/$documentId" });
+  const navigate = useNavigate({ from: "/$collectionId/$documentId" });
 
   return (
     <AlertDialog>
