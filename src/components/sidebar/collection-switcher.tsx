@@ -33,11 +33,7 @@ export function CollectionSwitcher() {
   const collections = useQuery(convexQuery(api.collection.getCollections, {}));
 
   if (collections.isLoading) {
-    return (
-      <SidebarMenu>
-        <SidebarMenuItem>Loading...</SidebarMenuItem>
-      </SidebarMenu>
-    );
+    return <SidebarMenu></SidebarMenu>;
   }
 
   if (collections.error || !collections.data) {

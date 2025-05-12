@@ -30,7 +30,8 @@ export default function FolderList() {
   if (error) {
     console.error(error);
 
-    return <span>Something went wrong. Try refreshing</span>;
+    // return <span>Something went wrong. Try refreshing</span>;
+    return;
   }
 
   if (!data) return;

@@ -30,7 +30,7 @@ export default function FolderDocumentList({
     }),
   );
 
-  if (error || !data) {
+  if (error) {
     if (error) console.error(error);
 
     return <span>Something went wrong. Try refreshing</span>;
@@ -46,7 +46,7 @@ export default function FolderDocumentList({
       </CollapsibleTrigger>
       <CollapsibleContent>
         <SidebarMenuSub>
-          {data.map((document) => (
+          {data?.map((document) => (
             <SidebarMenuSubItem key={document._id}>
               <SidebarMenuSubButton asChild>
                 <Link

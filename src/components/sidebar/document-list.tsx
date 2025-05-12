@@ -37,7 +37,8 @@ export default function DocumentList() {
   if (error) {
     console.error(error);
 
-    return <span>Something went wrong. Try refreshing</span>;
+    // return <span>Something went wrong. Try refreshing</span>;
+    return;
   }
 
   if (!data) return <span>Nothing here</span>;
