@@ -41,7 +41,7 @@ export default function DocumentList() {
     return;
   }
 
-  if (!data) return <span>Nothing here</span>;
+  if (!data || data.length === 0) return;
 
   return (
     <SidebarGroup>

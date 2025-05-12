@@ -34,7 +34,7 @@ export default function FolderList() {
     return;
   }
 
-  if (!data) return;
+  if (!data || data.length === 0) return;
 
   return (
     <SidebarGroup>
