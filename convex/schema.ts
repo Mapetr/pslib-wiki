@@ -12,7 +12,7 @@ export default defineSchema({
   documents: defineTable({
     name: v.string(),
     content: v.string(),
-    collections: v.optional(v.id("collections")),
+    collections: v.id("collections"),
     folders: v.optional(v.id("folders")),
   }),
 });

@@ -54,8 +54,9 @@ export default function DocumentList() {
                 asChild
               >
                 <Link
-                  to={"/doc/$documentId"}
+                  to={"/$collectionId/$documentId"}
                   params={{
+                    collectionId: doc.collections,
                     documentId: doc._id,
                   }}
                   preload={"intent"}

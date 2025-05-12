@@ -31,7 +31,7 @@ export default function FolderDocumentList({
   );
 
   if (error || !data) {
-    console.error(error);
+    if (error) console.error(error);
 
     return <span>Something went wrong. Try refreshing</span>;
   }
@@ -50,8 +50,9 @@ export default function FolderDocumentList({
             <SidebarMenuSubItem key={document._id}>
               <SidebarMenuSubButton asChild>
                 <Link
-                  to={"/doc/$documentId"}
+                  to={"/$collectionId/$documentId"}
                   params={{
+                    collectionId: document.collections,
                     documentId: document._id,
                   }}
                   preload={"intent"}

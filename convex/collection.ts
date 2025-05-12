@@ -19,3 +19,15 @@ export const getCollections = query({
     return await ctx.db.query("collections").collect();
   },
 });
+
+export const getCollectionFromId = query({
+  args: {
+    collectionId: v.id("collections"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("collections")
+      .filter((q) => q.eq(q.field("_id"), args.collectionId))
+      .first();
+  },
+});

@@ -12,7 +12,8 @@
 
 import { Route as rootRoute } from "./routes/__root";
 import { Route as IndexImport } from "./routes/index";
-import { Route as DocDocumentIdImport } from "./routes/doc/$documentId";
+import { Route as CollectionIdIndexImport } from "./routes/$collectionId/index";
+import { Route as CollectionIdDocumentIdImport } from "./routes/$collectionId/$documentId";
 
 // Create/Update Routes
 
@@ -22,9 +23,15 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
-const DocDocumentIdRoute = DocDocumentIdImport.update({
-  id: "/doc/$documentId",
-  path: "/doc/$documentId",
+const CollectionIdIndexRoute = CollectionIdIndexImport.update({
+  id: "/$collectionId/",
+  path: "/$collectionId/",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const CollectionIdDocumentIdRoute = CollectionIdDocumentIdImport.update({
+  id: "/$collectionId/$documentId",
+  path: "/$collectionId/$documentId",
   getParentRoute: () => rootRoute,
 } as any);
 
@@ -39,11 +46,18 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof IndexImport;
       parentRoute: typeof rootRoute;
     };
-    "/doc/$documentId": {
-      id: "/doc/$documentId";
-      path: "/doc/$documentId";
-      fullPath: "/doc/$documentId";
-      preLoaderRoute: typeof DocDocumentIdImport;
+    "/$collectionId/$documentId": {
+      id: "/$collectionId/$documentId";
+      path: "/$collectionId/$documentId";
+      fullPath: "/$collectionId/$documentId";
+      preLoaderRoute: typeof CollectionIdDocumentIdImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/$collectionId/": {
+      id: "/$collectionId/";
+      path: "/$collectionId";
+      fullPath: "/$collectionId";
+      preLoaderRoute: typeof CollectionIdIndexImport;
       parentRoute: typeof rootRoute;
     };
   }
@@ -53,37 +67,42 @@ declare module "@tanstack/react-router" {
 
 export interface FileRoutesByFullPath {
   "/": typeof IndexRoute;
-  "/doc/$documentId": typeof DocDocumentIdRoute;
+  "/$collectionId/$documentId": typeof CollectionIdDocumentIdRoute;
+  "/$collectionId": typeof CollectionIdIndexRoute;
 }
 
 export interface FileRoutesByTo {
   "/": typeof IndexRoute;
-  "/doc/$documentId": typeof DocDocumentIdRoute;
+  "/$collectionId/$documentId": typeof CollectionIdDocumentIdRoute;
+  "/$collectionId": typeof CollectionIdIndexRoute;
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute;
   "/": typeof IndexRoute;
-  "/doc/$documentId": typeof DocDocumentIdRoute;
+  "/$collectionId/$documentId": typeof CollectionIdDocumentIdRoute;
+  "/$collectionId/": typeof CollectionIdIndexRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/" | "/doc/$documentId";
+  fullPaths: "/" | "/$collectionId/$documentId" | "/$collectionId";
   fileRoutesByTo: FileRoutesByTo;
-  to: "/" | "/doc/$documentId";
-  id: "__root__" | "/" | "/doc/$documentId";
+  to: "/" | "/$collectionId/$documentId" | "/$collectionId";
+  id: "__root__" | "/" | "/$collectionId/$documentId" | "/$collectionId/";
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute;
-  DocDocumentIdRoute: typeof DocDocumentIdRoute;
+  CollectionIdDocumentIdRoute: typeof CollectionIdDocumentIdRoute;
+  CollectionIdIndexRoute: typeof CollectionIdIndexRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DocDocumentIdRoute: DocDocumentIdRoute,
+  CollectionIdDocumentIdRoute: CollectionIdDocumentIdRoute,
+  CollectionIdIndexRoute: CollectionIdIndexRoute,
 };
 
 export const routeTree = rootRoute
@@ -97,14 +116,18 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/doc/$documentId"
+        "/$collectionId/$documentId",
+        "/$collectionId/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/doc/$documentId": {
-      "filePath": "doc/$documentId.tsx"
+    "/$collectionId/$documentId": {
+      "filePath": "$collectionId/$documentId.tsx"
+    },
+    "/$collectionId/": {
+      "filePath": "$collectionId/index.tsx"
     }
   }
 }

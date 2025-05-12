@@ -22,11 +22,14 @@ import { api } from "../../../convex/_generated/api";
 import { activeCollectionAtom } from "../../../atoms.ts";
 import { useAtom } from "jotai";
 import { Authenticated } from "convex/react";
+import { useNavigate } from "@tanstack/react-router";
 
 export function CollectionSwitcher() {
   const { isMobile } = useSidebar();
+  const navigate = useNavigate();
   const [activeCollection, setActiveCollection] = useAtom(activeCollectionAtom);
 
+  // TODO: load from stale data first
   const collections = useQuery(convexQuery(api.collection.getCollections, {}));
 
   if (collections.isLoading) {
@@ -78,7 +81,13 @@ export function CollectionSwitcher() {
             {collections.data.map((collection, index) => (
               <DropdownMenuItem
                 key={collection.name}
-                onClick={() => setActiveCollection(collection)}
+                onClick={async () => {
+                  setActiveCollection(collection);
+                  await navigate({
+                    to: "/$collectionId",
+                    params: { collectionId: collection._id },
+                  });
+                }}
                 className="gap-2 p-2"
               >
                 {collection.name}
