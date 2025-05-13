@@ -11,22 +11,25 @@ import {
 import { SidebarMenuAction } from "@/components/ui/sidebar.tsx";
 import { MoreHorizontal } from "lucide-react";
 import { Id } from "../../../convex/_generated/dataModel";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
+import { useMutation } from "@tanstack/react-query";
+import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "../../../convex/_generated/api";
-import { useAtomValue } from "jotai";
-import { activeCollectionAtom } from "../../../atoms.ts";
 import { Authenticated } from "convex/react";
 
-export default function ButtonAction({ id }: { id: Id<"documents"> }) {
-  const activeCollection = useAtomValue(activeCollectionAtom);
-
-  const { data: folders } = useQuery(
-    convexQuery(api.folder.getFoldersFromCollection, {
-      collectionId: activeCollection._id ?? "",
-    }),
-  );
-
+export default function ButtonAction({
+  id,
+  folders,
+}: {
+  id: Id<"documents">;
+  folders:
+    | {
+        _id: Id<"folders">;
+        _creationTime: number;
+        collection: Id<"collections">;
+        name: string;
+      }[]
+    | undefined;
+}) {
   const { mutate: move } = useMutation({
     mutationFn: useConvexMutation(api.document.moveToFolder),
   });
