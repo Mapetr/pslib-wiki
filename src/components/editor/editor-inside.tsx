@@ -8,10 +8,10 @@ export default function EditorInside() {
   if (!editor.editor) return;
 
   return (
-    <div>
+    <div className={"print:hidden"}>
       <DragHandle
         className={
-          "flex h-6 w-6 items-center justify-center rounded-md border border-gray-700 bg-gray-500"
+          "flex h-6 w-6 items-center justify-center rounded-md border border-gray-700 bg-gray-500 print:hidden"
         }
         editor={editor.editor}
       >

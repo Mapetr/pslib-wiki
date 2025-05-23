@@ -42,7 +42,7 @@ export default function Header() {
   return (
     <header
       className={
-        "bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 left-0 z-50 flex h-10 w-full items-center justify-between gap-4 border-b px-2 backdrop-blur"
+        "bg-background/95 supports-[backdrop-filter]:bg-background/60 sticky top-0 left-0 z-50 flex h-10 w-full items-center justify-between gap-4 border-b px-2 backdrop-blur print:hidden"
       }
     >
       <div className={"flex items-center"}>

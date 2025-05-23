@@ -33,7 +33,7 @@ export function BubbleMenuView({ editor }: { editor: Editor | null }) {
   if (!editor) return;
 
   return (
-    <div className="flex rounded-md bg-black p-1 outline outline-gray-400">
+    <div className="flex rounded-md bg-black p-1 outline outline-gray-400 print:hidden">
       <BubbleMenuButton
         editor={editor}
         name={"bold"}

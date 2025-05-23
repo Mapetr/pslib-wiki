@@ -197,11 +197,12 @@ export function Editor(props: { id: string }) {
       editorProps={{
         attributes: {
           class:
-            "prose prose-base prose-zinc dark:prose-invert px-2 h-full mx-auto mb-64 focus:outline-none",
+            "prose prose-base prose-zinc dark:prose-invert px-2 h-full mx-auto mb-64 focus:outline-none print:[&_*]:text-black",
         },
       }}
       editorContainerProps={{ className: "h-full" }}
     >
+      <h1>{}</h1>
       <EditorInside />
     </EditorProvider>
   );
