@@ -31,9 +31,11 @@ import { Dropcursor } from "@tiptap/extension-dropcursor";
 import { Gapcursor } from "@tiptap/extension-gapcursor";
 import { History } from "@tiptap/extension-history";
 import { ImageResize } from "tiptap-extension-resize-image";
+import { useConvex } from "convex/react";
 
 export function Editor(props: { id: string }) {
   const { isSignedIn, isLoaded } = useUser();
+  const convex = useConvex();
   const uploadFile = useUploadFile(api.r2);
   const sync = useTiptapSync(api.prosemirror, props.id);
 
@@ -91,6 +93,7 @@ export function Editor(props: { id: string }) {
 
         for (const file of files) {
           const key = await uploadFile(file);
+          const url = await convex.query(api.r2.getUrlFromKey, { key: key });
 
           // Insert the uploaded image into the editor
           currentEditor
@@ -98,7 +101,7 @@ export function Editor(props: { id: string }) {
             .insertContentAt(currentEditor.state.selection.anchor, {
               type: "image",
               attrs: {
-                src: `${import.meta.env.VITE_DESTINATION_UPLOAD}/${key}`,
+                src: url,
               },
             })
             .focus()
