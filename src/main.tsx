@@ -22,6 +22,7 @@ const queryClient = new QueryClient({
 convexQueryClient.connect(queryClient);
 
 import { routeTree } from "./routeTree.gen";
+import { Analytics } from "@vercel/analytics/react";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -44,6 +45,7 @@ createRoot(document.getElementById("root")!).render(
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
+          <Analytics />
         </QueryClientProvider>
       </ConvexProviderWithClerk>
     </ClerkProvider>
