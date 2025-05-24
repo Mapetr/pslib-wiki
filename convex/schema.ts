@@ -15,4 +15,7 @@ export default defineSchema({
     collections: v.id("collections"),
     folders: v.optional(v.id("folders")),
   }),
+  update: defineTable({
+    version: v.string(),
+  }),
 });

@@ -23,6 +23,7 @@ convexQueryClient.connect(queryClient);
 
 import { routeTree } from "./routeTree.gen";
 import { Analytics } from "@vercel/analytics/react";
+import { Toaster } from "@/components/ui/sonner.tsx";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
@@ -46,6 +47,7 @@ createRoot(document.getElementById("root")!).render(
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
           <Analytics />
+          <Toaster />
         </QueryClientProvider>
       </ConvexProviderWithClerk>
     </ClerkProvider>

@@ -13,6 +13,7 @@ import type * as document from "../document.js";
 import type * as folder from "../folder.js";
 import type * as prosemirror from "../prosemirror.js";
 import type * as r2 from "../r2.js";
+import type * as updateVersion from "../updateVersion.js";
 
 import type {
   ApiFromModules,
@@ -34,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   folder: typeof folder;
   prosemirror: typeof prosemirror;
   r2: typeof r2;
+  updateVersion: typeof updateVersion;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 
