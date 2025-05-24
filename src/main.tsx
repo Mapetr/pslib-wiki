@@ -8,6 +8,7 @@ import { ClerkProvider, useAuth } from "@clerk/clerk-react";
 import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { dark } from "@clerk/themes";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
+import * as Sentry from "@sentry/react";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL);
 const convexQueryClient = new ConvexQueryClient(convex);
@@ -27,6 +28,20 @@ import { Toaster } from "@/components/ui/sonner.tsx";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
+
+Sentry.init({
+  dsn: "https://1974cd5a1a4cde5aa90fb476963939d0@o4508695722786816.ingest.de.sentry.io/4509379596255312",
+  sendDefaultPii: true,
+  tracesSampleRate: 1.0,
+  integrations: [
+    Sentry.browserSessionIntegration(),
+    Sentry.browserProfilingIntegration(),
+    Sentry.tanstackRouterBrowserTracingIntegration(router),
+    Sentry.captureConsoleIntegration({
+      levels: ["warn", "error"],
+    }),
+  ],
+});
 
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
