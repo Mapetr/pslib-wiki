@@ -31,6 +31,12 @@ import { Dropcursor } from "@tiptap/extension-dropcursor";
 import { Gapcursor } from "@tiptap/extension-gapcursor";
 import { History } from "@tiptap/extension-history";
 import { ImageResize } from "tiptap-extension-resize-image";
+import {
+  baseSpotlightManager,
+  Spotlight,
+  SpotlightBlockSection,
+  SpotlightTextSection,
+} from "@webkadiz/tiptap-extension-spotlight/commonjs";
 
 export function Editor(props: { id: string }) {
   const { isSignedIn, isLoaded } = useUser();
@@ -118,11 +124,12 @@ export function Editor(props: { id: string }) {
       placeholder: "Press / to see available commands",
       emptyEditorClass: "is-editor-empty text-gray-500",
     }),
-    // Slash.configure({
-    //   suggestion: {
-    //     items: () => EditorSuggestions
-    //   }
-    // }),
+
+    Spotlight.configure(),
+    SpotlightBlockSection.removeItem("table"),
+    SpotlightTextSection.removeItem("underline"),
+    baseSpotlightManager.removeSection("align"),
+
     Text,
 
     Bold,
