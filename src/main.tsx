@@ -33,6 +33,8 @@ Sentry.init({
   dsn: "https://1974cd5a1a4cde5aa90fb476963939d0@o4508695722786816.ingest.de.sentry.io/4509379596255312",
   sendDefaultPii: true,
   tracesSampleRate: 1.0,
+  enabled: !import.meta.env.DEV,
+  environment: import.meta.env.MODE,
   integrations: [
     Sentry.browserSessionIntegration(),
     Sentry.browserProfilingIntegration(),

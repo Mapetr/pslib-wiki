@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useConvexMutation } from "@convex-dev/react-query";
 import { api } from "../../../../convex/_generated/api";
@@ -17,7 +17,11 @@ import { Button } from "@/components/ui/button.tsx";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils.ts";
 
-export default function FolderDialog() {
+export default function FolderDialog({
+  setOpen,
+}: {
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}) {
   const inputRef = useRef(null as HTMLInputElement | null);
   const { mutate, isPending } = useMutation({
     mutationFn: useConvexMutation(api.folder.createFolder),
@@ -33,6 +37,8 @@ export default function FolderDialog() {
       name: inputRef.current.value,
       collectionId: activeCollection._id,
     });
+
+    setOpen(false);
   };
 
   return (
@@ -44,7 +50,16 @@ export default function FolderDialog() {
         </DialogDescription>
       </DialogHeader>
       <div>
-        <Input type={"text"} placeholder={"Name"} ref={inputRef} />
+        <Input
+          type={"text"}
+          placeholder={"Name"}
+          ref={inputRef}
+          onKeyDown={(event) => {
+            if (event.key !== "Enter") return;
+
+            createFolder();
+          }}
+        />
       </div>
       <DialogFooter>
         <DialogClose asChild>
